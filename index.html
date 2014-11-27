@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="jquery.mobile-1.4.4.min.css">
+	<script src="jquery-1.11.1.js"></script>
+	<script src="jquery.mobile-1.4.4.min.js"></script>
+        <script src="jquery.mobile.theme-1.4.4.css"></script>
+        <script src="jquery.mobile.theme-1.4.4.min.css"></script>
+	<script type="text/javascript" src="cordova.js"></script>
+        <script src="barcodescanner.js"></script>
+        
+        <script>
+document.addEventListener("deviceready",
+init);
+
+
+var resultDiv;
+function init(){
+$("#barcodescanner").on("click",function(){
+startScan();
+});
+resultDiv
+=
+document.querySelector("#results");
+}
+
+function startScan()
+{
+cordova.plugins.barcodeScanner.scan(
+function(result){
+var s ="Result:"+result.text+"<br/>"+
+	   "Format:"+result.format+"<br/>"+
+	   "Cancelled:"+result.cancelled;
+	   resultDiv.innerHTML=s;
+},
+
+function(error){
+alert("Scanning failed:"+ error);
+}
+);
+}
+</script>
+<script>
+    function syncAjax(u){
+	var obj=$.ajax(
+            {url:u,
+                async:false
+            });
+	return $.parseJSON(obj.responseText);
+    }
+
+
+function post_assignment(){
+    var id=$("#select-teacher").val();
+    
+    var subject=$("#select-subject").val();
+    var year=$("#select-choice-year").val();
+    var task=$("#homeWork").val();
+  
+    
+    var u="sch_action.php?cmd=2&teach="
+         +id+"&sub="+subject+"&year="+year+
+          "&task="+task;
+  
+			
+   var r=syncAjax(u);
+   
+  if(r.result==0){
+       return;
+   }
+}
+   
+ function mylsit(){ 
+ 
+        var u="sch_action.php?cmd=1";
+					
+			var r=syncAjax(u);
+			
+			if(r.result==0){
+				$("divStatus").text(r.message);
+				return;
+			}
+			var i=0;
+			for(i=0;i<r.person.length;i++){
+				//$("#myList").text(r.person[i].username);
+				
+				   var parent = document.getElementById('listview');
+            var listItem = document.createElement('li');
+            listItem.setAttribute('id','listitem');
+			
+			var name=r.person[i].aid;
+                        var assign=r.person[i].comment;
+                        
+			//alert(r.person[i].aid);
+                        alert(r.person[i].comment)
+            listItem.innerHTML="<a href='#myOwnList'"+r.person[i].aid+">"+name+" "+assign+"</a>";
+            parent.appendChild(listItem);
+			//$("#listview").trigger('create');
+			//( "#listview" ).listview("refresh")	
+			//$( '#listview' ).listview().listview('refresh');
+			   var list = document.getElementById('listview');
+            $(list).listview("refresh");
+			}
+}
+
+function sendClarification(){
+     var reply=$("#clarification").val();
+     var aid=$("#assNo").val();
+       var u="sch_action.php?cmd=3&id="+aid+"&reply="+reply;
+					
+	var r=syncAjax(u);
+			
+	if(r.result==0){
+            $("divStatus").text(r.message);
+		return;
+	}			
+}
+
+
+
+        </script>
+</head>
+<body onload="initialize()">
+
+    
+    
+	<div data-role="page" id="pageone">
+	
+            <div data-role="header" data-position="inline" data-theme="b">
+			<a href="#pageone" data-role="button" data-transition="pop" data-icon="home" data-iconpos="notext">Home</a>
+			<h1>School Aid</h1>
+            </div>
+	
+            <div data-role="main" class="ui-content">
+                      <div>
+                          <label for="">   </label>
+			<a href="#pagetwo"data-role="button" data-inline="true" id="compose">Compose Assignment</a>
+                      </div>
+                       <div>
+			<a href="#pagethree"data-role="button" data-inline="true" align="center" onclick="mylsit()">View Parent Response</a>
+		`      </div>
+            </div>
+	
+            <a href="#" id="barcodescanner" data-role="buVon" >Scan a bar code</a>
+		<div id="results"></div>
+            
+            <div data-role="footer" data-theme="b">
+		<h3>schaid@gmail.com</h3>	
+            </div>
+	
+        </div>
+
+
+    
+
+        <div data-role="page" id="pagetwo">
+                <div data-role="header" data-theme="b">
+                    <a href="#pageone" data-role="button" data-transition="pop" data-icon="home" data-iconpos="notext">Home</a>
+			<h1>School Aid</h1>		
+                </div>
+	
+                 <div role="main" class="ui-content">
+                    <form>
+                        <div data-role="fieldcontain">
+                             <fieldset data-role="controlgroup">
+                                 <legend><b>Class Details:</b></legend>
+                                 
+                                 
+                                 <label for="select-teacher">Teacher</label>
+                                <select name="select-teacher" id="select-teacher">
+                                    <option>Teacher</option>
+                                    <option value="1">Nathan Amanquah</option>
+                                    <option value="2">Bella Acquah</option>
+                                    <option value="3">Ellis Wesley</option>
+                                    <!-- etc. -->
+                                 </select>
+                                 
+                                 <label for="select-subject">Subject</label>
+                                 <select name="select-subject" id="select-subject">
+                                    <option>Subject</option>
+                                    <option value="11">Math</option>
+                                    <option value="22">English</option>
+                                    <option value="33">Science</option>
+                                     <!-- etc. -->
+                                 </select>
+
+                                <label for="select-choice-year">Year</label>
+                                <select name="select-choice-year" id="select-choice-year">
+                                    <option>Year</option>
+                                    <option value="2014">2014</option>
+                                    <option value="2015">2015</option>
+                                    <option value="2016">2016</option>
+                                    <option value="2017">2017</option>
+                                    <option value="2018">2018</option>
+                                    <option value="2019">2019</option>
+                                    <option value="2020">2020</option>
+                                    <!-- etc. -->
+                               </select>
+                            </fieldset>
+                        </div>
+            
+                         <div>
+                            <label for="homeWork"><b>Home Work :</b></label>
+                            <textarea type="text" name="homeWork" id="homeWork" data-inline="true" id="homeWork" value="" placeholder="Enter assgiment description here" ></textarea>
+                         </div>
+
+                         <div>
+                            <label for="submit" ></label>
+                            <input type="button" name="submit" value="Send Task" data-inline="true" onclick='post_assignment()'/>
+                         </div>
+
+                         
+                        
+                     </form>
+                </div>
+	
+            <div data-role="footer" data-theme="b">
+		<h3>schaid@gmail.com</h3>	
+            </div>
+	
+        </div>
+
+
+
+        <div data-role="page" id="pagethree">
+            <div data-role="header" data-theme="b">
+		<a href="#pageone" data-role="button" data-transition="pop" data-icon="home" data-iconpos="notext">Home</a>
+		<h1>School Aid</h1>
+            </div>
+	
+	<div role="main" class="ui-content">
+            
+            
+            <ul data-role="listview" id="listview">
+				
+		<li data-role="list-divider">
+                    
+                </li>
+				
+            </ul>
+            
+          
+        
+		<div>
+                      <div>
+                <label for="assNo">Assignment No:</label>
+                <input type="text" name="assNo" id="assNo" data-inline="true"  value="" placeholder="Enter the assgiment number here. Eg. 3" >
+            </div>
+                            <label for="homeWork"><b>Assignment Clarifications :</b></label>
+                            <textarea type="text" name="clarification" id="clarification" data-inline="true" id="homeWork" value="" placeholder="Enter clarifications on assignments here..." ></textarea>
+                         </div>
+            
+            <div>
+                <button name="clarification" id="clarification" onclick="sendClarification()">Send</button>
+             </div>
+	</div>
+	
+	<div data-role="footer" data-theme="b">
+		<h3>schaid@gmail.com</h3>	
+	</div>
+	
+</div>
+
+
+</body>
+</html>
