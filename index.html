@@ -51,6 +51,7 @@ alert("Scanning failed:"+ error);
 
 
 function post_assignment(){
+     dataSaved();
     var id=$("#select-teacher").val();
     
     var subject=$("#select-subject").val();
@@ -68,6 +69,15 @@ function post_assignment(){
   if(r.result==0){
        return;
    }
+   
+  
+}
+
+function dataSaved(){
+    var textarray=["Your assignment has succesfully been sent"];
+   $('#status').fadeOut('fast', function() { 
+        $(this).text(textarray[0]).fadeIn('fast');
+    });
 }
    
  function mylsit(){ 
@@ -126,25 +136,27 @@ function sendClarification(){
     
 	<div data-role="page" id="pageone">
 	
-            <div data-role="header" data-position="inline" data-theme="b">
+            <div data-role="header" data-position="fixed" data-theme="b">
 			<a href="#pageone" data-role="button" data-transition="pop" data-icon="home" data-iconpos="notext">Home</a>
 			<h1>School Aid</h1>
             </div>
 	
-            <div data-role="main" class="ui-content">
-                      <div>
-                          <label for="">   </label>
-			<a href="#pagetwo"data-role="button" data-inline="true" id="compose">Compose Assignment</a>
+            <div data-role="main" class="ui-content" data-position="fixed">
+                <br><br><br>
+                      <div align="center">
+                          <label for="compose">   </label>
+			<a href="#pagetwo" data-role="button" data-inline="true" id="compose">Compose Assignments</a>
                       </div>
-                       <div>
-			<a href="#pagethree"data-role="button" data-inline="true" align="center" onclick="mylsit()">View Parent Response</a>
+                       <div align="center">
+			<a href="#pagethree" data-role="button" data-inline="true" onclick="mylsit()">View Parent Response</a>
 		`      </div>
             </div>
-	
+	<div align="center">
             <a href="#" id="barcodescanner" data-role="buVon" >Scan a bar code</a>
+            </div>
 		<div id="results"></div>
             
-            <div data-role="footer" data-theme="b">
+            <div data-role="footer" data-theme="b" data-position="fixed">
 		<h3>schaid@gmail.com</h3>	
             </div>
 	
@@ -154,12 +166,12 @@ function sendClarification(){
     
 
         <div data-role="page" id="pagetwo">
-                <div data-role="header" data-theme="b">
+                <div data-role="header" data-theme="b" data-position="fixed">
                     <a href="#pageone" data-role="button" data-transition="pop" data-icon="home" data-iconpos="notext">Home</a>
 			<h1>School Aid</h1>		
                 </div>
 	
-                 <div role="main" class="ui-content">
+                 <div role="main" class="ui-content" data-position="fixed">
                     <form>
                         <div data-role="fieldcontain">
                              <fieldset data-role="controlgroup">
@@ -201,20 +213,21 @@ function sendClarification(){
             
                          <div>
                             <label for="homeWork"><b>Home Work :</b></label>
-                            <textarea type="text" name="homeWork" id="homeWork" data-inline="true" id="homeWork" value="" placeholder="Enter assgiment description here" ></textarea>
+                            <textarea name="homeWork" data-inline="true" id="homeWork"  placeholder="Enter assgiment description here" ></textarea>
                          </div>
 
                          <div>
                             <label for="submit" ></label>
                             <input type="button" name="submit" value="Send Task" data-inline="true" onclick='post_assignment()'/>
                          </div>
+                
 
-                         
-                        
                      </form>
+                             
+                        <div  id="status"> </div>
                 </div>
 	
-            <div data-role="footer" data-theme="b">
+            <div data-role="footer" data-theme="b" data-position="fixed">
 		<h3>schaid@gmail.com</h3>	
             </div>
 	
@@ -223,12 +236,12 @@ function sendClarification(){
 
 
         <div data-role="page" id="pagethree">
-            <div data-role="header" data-theme="b">
+            <div data-role="header" data-theme="b" data-position="fixed">
 		<a href="#pageone" data-role="button" data-transition="pop" data-icon="home" data-iconpos="notext">Home</a>
 		<h1>School Aid</h1>
             </div>
 	
-	<div role="main" class="ui-content">
+	<div role="main" class="ui-content" data-position="fixed">
             
             
             <ul data-role="listview" id="listview">
@@ -247,7 +260,7 @@ function sendClarification(){
                 <input type="text" name="assNo" id="assNo" data-inline="true"  value="" placeholder="Enter the assgiment number here. Eg. 3" >
             </div>
                             <label for="homeWork"><b>Assignment Clarifications :</b></label>
-                            <textarea type="text" name="clarification" id="clarification" data-inline="true" id="homeWork" value="" placeholder="Enter clarifications on assignments here..." ></textarea>
+                            <textarea  name="clarification" id="clarification" data-inline="true"  placeholder="Enter clarifications on assignments here..." ></textarea>
                          </div>
             
             <div>
@@ -255,7 +268,7 @@ function sendClarification(){
              </div>
 	</div>
 	
-	<div data-role="footer" data-theme="b">
+	<div data-role="footer" data-theme="b" data-position="fixed">
 		<h3>schaid@gmail.com</h3>	
 	</div>
 	
